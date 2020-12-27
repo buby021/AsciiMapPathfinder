@@ -1,21 +1,14 @@
 import AsciiMap.MapSolver
 import AsciiMap.MapSolverError
+import utils.MapFiles
 import utils.MapFiles.Companion.MAP1
-import utils.MapFiles.Companion.MAP2
-import utils.MapFiles.Companion.MAP3
-import utils.MapFiles.Companion.MAP4
-import utils.MapFiles.Companion.MAP5
-import utils.MapFiles.Companion.MAP6
-import utils.MapFiles.Companion.MAP7
-import utils.MapFiles.Companion.MAP8
-import utils.MapFiles.Companion.MAP9
-import utils.MapFiles.Companion.MAP10
-
-fun main() {
 
 
-    println(MAP1)
-    val mapSolver = MapSolver(MAP1)
+fun main(args: Array<String>) {
+    val mapName = if (!args.isNullOrEmpty()) args[0] else "MAP1"
+    val map = MapFiles.getHardcodedMapByName(mapName)
+    println(map)
+    val mapSolver = MapSolver(map)
     try {
         val result = mapSolver.solve()
         println(result.path)
@@ -23,8 +16,5 @@ fun main() {
     } catch (error: MapSolverError) {
         println(error.message)
     }
-
 }
-
-
 
