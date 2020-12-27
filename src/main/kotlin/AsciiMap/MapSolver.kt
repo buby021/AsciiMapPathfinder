@@ -80,7 +80,7 @@ class MapSolver(private val map: String) {
                 position = null
             } else {
                 try {
-                    direction = getNextDirection(directionChoice)
+                    direction = getNextDirection(directionChoice, characterAtPosition == Characters.CORNER.char)
                 } catch (e: Exception) {
                     throw MapSolverError(e.message, e)
                 }
@@ -122,17 +122,29 @@ class MapSolver(private val map: String) {
         return LEFT
     }
 
-    private fun getNextDirection(directions: List<Direction>): Direction {
+    private fun getNextDirection(directions: List<Direction>, checkForTfork: Boolean = false): Direction {
+        var counter = 0
+        var cornerDirection = directions.first()
         directions.forEach { direction ->
             val position = getRelativePosition(direction, position!!)
             try {
-                val tempChar = mapMatrix[position.y][position.x]
-                if (tempChar != Characters.EMPTY.char) {
-                    return direction
+                val nextCharacter = mapMatrix[position.y][position.x]
+                if (nextCharacter != Characters.EMPTY.char) {
+                    if (checkForTfork) {
+                        counter++
+                        cornerDirection = direction
+                    } else {
+                        return direction
+                    }
                 }
             } catch (error: IndexOutOfBoundsException) {
 
             }
+        }
+        if (counter > 1) {
+            throw MapSolverError(Constants.ERROR_T_FORK)
+        } else if (counter > 0) {
+            return cornerDirection
         }
         throw MapSolverError(Constants.ERROR_NO_END)
     }

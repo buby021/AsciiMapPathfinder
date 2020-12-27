@@ -5,7 +5,7 @@ import utils.MapFiles.Companion.MAP1
 
 
 fun main(args: Array<String>) {
-    val mapName = if (!args.isNullOrEmpty()) args[0] else "MAP1"
+    val mapName = if (!args.isNullOrEmpty()) args[0] else "MAP7"
     val map = MapFiles.getHardcodedMapByName(mapName)
     println(map)
     val mapSolver = MapSolver(map)

@@ -10,6 +10,7 @@ import utils.MapFiles.Companion.MAP7
 import org.junit.Test
 import utils.Constants
 import utils.MapFiles.Companion.MAP10
+import utils.MapFiles.Companion.MAP11
 import utils.MapFiles.Companion.MAP8
 import utils.MapFiles.Companion.MAP9
 import kotlin.test.assertEquals
@@ -106,6 +107,16 @@ class MapSolverTest {
             val result = mapSolver.solve()
         } catch (error: MapSolverError) {
             assertEquals(MapSolverError(Constants.ERROR_MULTIPLE_ENDS).message, error.message)
+        }
+    }
+
+    @Test
+    fun testMap11() {
+        val mapSolver = MapSolver(MAP11)
+        try {
+            val result = mapSolver.solve()
+        } catch (error: MapSolverError) {
+            assertEquals(MapSolverError(Constants.ERROR_T_FORK).message, error.message)
         }
     }
 

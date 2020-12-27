@@ -36,6 +36,9 @@ class MapFiles {
                 "MAP10" -> {
                     MAP10
                 }
+                "MAP11" -> {
+                    MAP11
+                }
 
                 else -> MAP1
             }
@@ -102,6 +105,14 @@ class MapFiles {
                 "   @--A---+\n" +
                 "          |\n" +
                 "     x+   C\n" +
+                "      |   |\n" +
+                "      +---+ "
+
+        val MAP11 = "        x-B\n" +
+                "          |\n" +
+                "   @--A---+\n" +
+                "          |\n" +
+                "      +   C\n" +
                 "      |   |\n" +
                 "      +---+ "
     }

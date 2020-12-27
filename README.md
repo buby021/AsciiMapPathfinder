@@ -11,5 +11,6 @@ You can run console app from command prompt passing the argument with name of ma
 
 java -jar AsciiMapPathfinder-1.0.jar MAP1
 
-##TESTS
+## TESTS
 inside tests/kotlin
+added MAP11 for testing T-fork with only one end - result Error T-fork

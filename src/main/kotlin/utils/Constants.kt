@@ -7,5 +7,6 @@ class Constants {
         val ERROR_MULTIPLE_ENDS = "Error - Multiple end characters"
         val ERROR_NO_STARTING_POINT = "Error - No starting point"
         val ERROR_NO_END = "Error - There is no end"
+        val ERROR_T_FORK = "Error - T-Fork corner"
     }
 }
