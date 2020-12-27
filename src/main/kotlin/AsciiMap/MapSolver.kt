@@ -11,13 +11,13 @@ import enums.Direction.RIGHT
 import enums.Characters
 import utils.Constants
 
-class MapSolver(val map: String) {
+class MapSolver(private val map: String) {
 
-    var mapMatrix = map.split("\n")
-    var position: Position? = null
-    var visitedPositions: ArrayList<Position> = arrayListOf()
-    var direction: Direction? = null
-    var characterAtPosition: Char = '\u0000'
+    private var mapMatrix = map.split("\n")
+    private var position: Position? = null
+    private var visitedPositions: ArrayList<Position> = arrayListOf()
+    private var direction: Direction? = null
+    private var characterAtPosition: Char = '\u0000'
     var path: StringBuilder = StringBuilder()
     var letters: StringBuilder = StringBuilder()
 
@@ -25,18 +25,18 @@ class MapSolver(val map: String) {
     fun solve(): Result {
         val mapMatrix = map.split("\n")
 
-        val starts = map.filter { it.equals(Characters.START.char) }
+        val starts = map.filter { it == (Characters.START.char) }
         if (starts.length > 1)
             throw MapSolverError(Constants.ERROR_MULTIPLE_STARTS)
 
-        val ends = map.filter { it.equals(Characters.END.char) }
+        val ends = map.filter { it == (Characters.END.char) }
         if (ends.length > 1)
             throw MapSolverError(Constants.ERROR_MULTIPLE_ENDS)
 
 
         //find START
-        mapMatrix.forEachIndexed() { index, row ->
-            if (row.find { it.equals(Characters.START.char) } != null) {
+        mapMatrix.forEachIndexed { index, row ->
+            if (row.find { it == (Characters.START.char) } != null) {
                 position = Position(row.indexOf(Characters.START.char), index)
                 return@forEachIndexed
             }
@@ -63,18 +63,16 @@ class MapSolver(val map: String) {
 
 
             //find direction
-            var directionChoice = emptyList<Direction>()
-            if (direction == null) {
-                //checkAllDirections
-                directionChoice = listOf(Direction.RIGHT, Direction.LEFT, DOWN, Direction.UP)
+            val directionChoice: List<Direction> = if (direction == null) {
+                listOf(RIGHT, LEFT, DOWN, UP)
             } else {
                 val ortogonalDirection = getOrtogonalDirection(direction!!)
                 if (characterAtPosition == Characters.CORNER.char) {
-                    directionChoice = listOf(ortogonalDirection, getOppositeDirection(ortogonalDirection))
+                    listOf(ortogonalDirection, getOppositeDirection(ortogonalDirection))
                 } else if (characterAtPosition.isUpperCase() && characterAtPosition.isLetter()) {
-                    directionChoice = listOf(direction!!, ortogonalDirection, getOppositeDirection(ortogonalDirection))
+                    listOf(direction!!, ortogonalDirection, getOppositeDirection(ortogonalDirection))
                 } else {
-                    directionChoice = listOf(direction!!)
+                    listOf(direction!!)
                 }
             }
 
@@ -94,39 +92,42 @@ class MapSolver(val map: String) {
         return Result(path.toString(), letters.toString())
     }
 
-    fun getRelativePosition(direction: Direction, currentPosition: Position): Position? {
+    private fun getRelativePosition(direction: Direction, currentPosition: Position): Position {
 
-        if (direction == null) return null
-
-        if (direction == LEFT) {
-            return Position(currentPosition.x - 1, currentPosition.y)
-        } else if (direction == RIGHT) {
-            return Position(currentPosition.x + 1, currentPosition.y)
-        } else if (direction == UP) {
-            return Position(currentPosition.x, currentPosition.y - 1)
-        } else {
-            return Position(currentPosition.x, currentPosition.y + 1)
+        return when (direction) {
+            LEFT -> {
+                Position(currentPosition.x - 1, currentPosition.y)
+            }
+            RIGHT -> {
+                Position(currentPosition.x + 1, currentPosition.y)
+            }
+            UP -> {
+                Position(currentPosition.x, currentPosition.y - 1)
+            }
+            else -> {
+                Position(currentPosition.x, currentPosition.y + 1)
+            }
         }
     }
 
-    fun getOppositeDirection(direction: Direction): Direction {
+    private fun getOppositeDirection(direction: Direction): Direction {
         if (direction == UP) return DOWN
         if (direction == DOWN) return UP
         if (direction == LEFT) return RIGHT
         return LEFT
     }
 
-    fun getOrtogonalDirection(direction: Direction): Direction {
+    private fun getOrtogonalDirection(direction: Direction): Direction {
         if (direction == LEFT || direction == RIGHT) return UP
         return LEFT
     }
 
-    fun getNextDirection(directions: List<Direction>): Direction? {
+    private fun getNextDirection(directions: List<Direction>): Direction {
         directions.forEach { direction ->
             val position = getRelativePosition(direction, position!!)
             try {
-                val tempChar = mapMatrix[position!!.y][position.x]
-                if (!tempChar.equals(Characters.EMPTY.char)) {
+                val tempChar = mapMatrix[position.y][position.x]
+                if (tempChar != Characters.EMPTY.char) {
                     return direction
                 }
             } catch (error: IndexOutOfBoundsException) {
