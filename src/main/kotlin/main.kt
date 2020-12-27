@@ -1,14 +1,21 @@
 import AsciiMap.MapSolver
 import AsciiMap.MapSolverError
 import utils.MapFiles.Companion.MAP1
+import utils.MapFiles.Companion.MAP2
+import utils.MapFiles.Companion.MAP3
+import utils.MapFiles.Companion.MAP4
+import utils.MapFiles.Companion.MAP5
+import utils.MapFiles.Companion.MAP6
 import utils.MapFiles.Companion.MAP7
 import utils.MapFiles.Companion.MAP8
+import utils.MapFiles.Companion.MAP9
+import utils.MapFiles.Companion.MAP10
 
-fun main(args: Array<String>) {
+fun main() {
 
 
-    println(MAP8)
-    val mapSolver = MapSolver(MAP8)
+    println(MAP1)
+    val mapSolver = MapSolver(MAP1)
     try {
         val result = mapSolver.solve()
         println(result.path)
